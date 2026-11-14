@@ -66,18 +66,10 @@ export const GroupsScreen: React.FC<GroupsScreenProps> = ({
           ========================================================================= */}
       <section className="space-y-3.5">
         {/* Title Header */}
-        <div className="flex items-start justify-between">
-          <div>
-            <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#6c8e7e] block">
-              GROUP SAVINGS
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-0.5 font-sans">
-              Groups
-            </h2>
-            <p className="text-xs text-[#8ca89b] mt-1.5 leading-relaxed max-w-xs">
-              Cooperative pools, contribution discipline, and group trust stay visible.
-            </p>
-          </div>
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-sans">
+            Groups
+          </h2>
 
           <button
             onClick={handleRefresh}
@@ -132,12 +124,12 @@ export const GroupsScreen: React.FC<GroupsScreenProps> = ({
         </div>
 
         {/* Summary Stats Cards: [ACTIVE: 3] [AVG TRUST: 62%] */}
-        <div className="grid grid-cols-2 gap-3.5">
-          <div className="bg-[#0b2118]/80 border border-[#163828] rounded-xl p-3.5">
-            <span className="block text-[11px] font-bold uppercase tracking-wider text-[#6c8e7e]">
+        <div className="grid grid-cols-2 gap-2.5">
+          <div className="bg-[#0b2118]/80 border border-[#163828] rounded-xl py-2 px-3">
+            <span className="block text-[10px] font-bold uppercase tracking-wider text-[#6c8e7e]">
               ACTIVE
             </span>
-            <span className="text-xl font-bold text-white mt-1 block">
+            <span className="text-base sm:text-lg font-bold text-white mt-0.5 block leading-none">
               {activeCount}
             </span>
           </div>
@@ -145,23 +137,20 @@ export const GroupsScreen: React.FC<GroupsScreenProps> = ({
           <button
             type="button"
             onClick={() => setShowTrustModal(true)}
-            className="bg-[#0b2118]/80 border border-[#163828] hover:border-[#eab308]/60 rounded-xl p-3.5 text-left transition-all group cursor-pointer"
+            className="bg-[#0b2118]/80 border border-[#163828] hover:border-[#eab308]/60 rounded-xl py-2 px-3 text-left transition-all group cursor-pointer"
           >
             <div className="flex items-center justify-between">
-              <span className="block text-[11px] font-bold uppercase tracking-wider text-[#6c8e7e]">
+              <span className="block text-[10px] font-bold uppercase tracking-wider text-[#6c8e7e]">
                 AVG TRUST
               </span>
-              <ShieldCheck className="w-3.5 h-3.5 text-[#eab308] group-hover:scale-110 transition-transform" />
+              <ShieldCheck className="w-3 h-3 text-[#eab308]/80 group-hover:scale-110 transition-transform" />
             </div>
-            <div className="flex items-baseline space-x-1.5 mt-1">
-              <span className="text-xl font-bold text-white">62%</span>
-              <span className="text-[10px] text-[#86efac] font-bold bg-[#10b981]/15 px-1.5 py-0.2 rounded">
+            <div className="flex items-baseline space-x-1 mt-0.5 leading-none">
+              <span className="text-base sm:text-lg font-bold text-white leading-none">62%</span>
+              <span className="text-[9px] text-[#86efac] font-semibold bg-[#10b981]/15 px-1 rounded">
                 Tier 2
               </span>
             </div>
-            <span className="text-[10px] text-[#facc15] block mt-0.5 opacity-90 group-hover:underline">
-              Inspect algorithm &rarr;
-            </span>
           </button>
         </div>
 
@@ -182,8 +171,7 @@ export const GroupsScreen: React.FC<GroupsScreenProps> = ({
           {/* Quick Filter Chips (All, Active, Completed, Fixed-Pot) */}
           <div className="flex items-center space-x-2 overflow-x-auto pb-1 text-xs select-none">
             <div className="flex items-center text-[#6c8e7e] pr-1">
-              <SlidersHorizontal className="w-3.5 h-3.5 mr-1" />
-              <span className="text-[11px] uppercase font-bold tracking-wider">Filter:</span>
+              <SlidersHorizontal className="w-3.5 h-3.5" />
             </div>
 
             <button
