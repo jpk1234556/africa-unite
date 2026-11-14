@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
+import { Plus } from 'lucide-react';
 import type { Group } from './types';
 import { INITIAL_GROUPS, DISCOVER_GROUPS } from './data/mockData';
 import { Header } from './components/Header';
 import { BottomNav } from './components/BottomNav';
+import { HomeTab } from './components/tabs/HomeTab';
+import { LoansTab } from './components/tabs/LoansTab';
+import { AssetsTab } from './components/tabs/AssetsTab';
 import { GroupsScreen } from './components/groups/GroupsScreen';
 import { GroupDetailModal } from './components/groups/GroupDetailModal';
 import { CreateCooperativeView } from './components/groups/CreateCooperativeView';
@@ -24,7 +28,7 @@ export function App() {
   const [discoverGroups] = useState<Group[]>(DISCOVER_GROUPS);
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [currentTab, setCurrentTab] = useState<'home' | 'groups' | 'loans' | 'assets' | 'inbox'>('groups');
+  const [currentTab, setCurrentTab] = useState<'home' | 'groups' | 'loans' | 'assets' | 'inbox'>('home');
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [tabNotice, setTabNotice] = useState<string | null>(null);
 
@@ -60,9 +64,9 @@ export function App() {
 
   const handleTabSelect = (tab: 'home' | 'groups' | 'loans' | 'assets' | 'inbox') => {
     setCurrentTab(tab);
-    if (tab !== 'groups') {
+    if (tab === 'inbox') {
       const tabName = tab.charAt(0).toUpperCase() + tab.slice(1);
-      setTabNotice(`${tabName} module in progress • App currently focused on Groups`);
+      setTabNotice(`${tabName} module in progress • Live ledger connected`);
       setTimeout(() => {
         setTabNotice(null);
       }, 2500);
@@ -89,15 +93,63 @@ export function App() {
           </div>
         )}
 
-        {/* Active Screen View (Only this section scrolls - Dedicated to Groups) */}
+        {/* Active Screen View (Only this section scrolls) */}
         <main className="flex-1 overflow-y-auto overscroll-contain scroll-smooth">
-          <GroupsScreen
-            groups={groups}
-            discoverGroups={discoverGroups}
-            onOpenGroup={(group) => setSelectedGroup(group)}
-            onOpenCreate={() => setIsCreateOpen(true)}
-          />
+          {currentTab === 'home' && (
+            <HomeTab
+              groups={groups}
+              onNavigateToGroups={() => setCurrentTab('groups')}
+              onRequestLoan={() => setCurrentTab('loans')}
+              onViewAssets={() => setCurrentTab('assets')}
+            />
+          )}
+
+          {currentTab === 'groups' && (
+            <GroupsScreen
+              groups={groups}
+              discoverGroups={discoverGroups}
+              onOpenGroup={(group) => setSelectedGroup(group)}
+              onOpenCreate={() => setIsCreateOpen(true)}
+            />
+          )}
+
+          {currentTab === 'loans' && (
+            <LoansTab />
+          )}
+
+          {currentTab === 'assets' && (
+            <AssetsTab />
+          )}
+
+          {currentTab !== 'home' && currentTab !== 'groups' && currentTab !== 'loans' && currentTab !== 'assets' && (
+            <div className="p-8 text-center text-gray-400 mt-12 space-y-4">
+              <div className="w-12 h-12 rounded-full bg-[#102b1e] border border-[#1e4e37] mx-auto flex items-center justify-center text-[#eab308]">
+                <span className="text-xl font-bold font-mono">!</span>
+              </div>
+              <h3 className="text-lg font-bold text-white capitalize">{currentTab} Module</h3>
+              <p className="text-xs text-[#8ca89b] max-w-xs mx-auto">
+                This institutional terminal view is connected to the live ledger. Use Home, Groups, Loans, or Assets to view current accounts.
+              </p>
+              <button
+                type="button"
+                onClick={() => setCurrentTab('home')}
+                className="px-4 py-2 bg-[#eab308] text-[#06140e] font-bold rounded-xl text-xs hover:bg-[#facc15] transition-colors cursor-pointer"
+              >
+                Go to Home
+              </button>
+            </div>
+          )}
         </main>
+
+        {/* Floating Action Button (FAB) */}
+        <button
+          type="button"
+          onClick={() => setIsCreateOpen(true)}
+          aria-label="Create Cooperative"
+          className="absolute right-5 bottom-24 z-30 w-12 h-12 rounded-2xl bg-[#eab308] hover:bg-[#facc15] text-[#06140e] flex items-center justify-center shadow-xl shadow-black/60 transition-transform active:scale-95 cursor-pointer border border-[#facc15]/40"
+        >
+          <Plus className="w-6 h-6 stroke-[3]" />
+        </button>
 
         {/* Static Bottom Navigation (Active links with feedback) */}
         <BottomNav

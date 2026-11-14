@@ -22,22 +22,27 @@ export const Header: React.FC<HeaderProps> = ({ isDarkMode = true, onToggleTheme
         </div>
       </div>
 
-      {/* Status pill & theme toggle */}
-      <div className="flex items-center space-x-3">
-        <div className="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#0a2318] border border-[#1d4634] text-xs font-semibold text-gray-200">
-          <span className="w-2 h-2 rounded-full bg-[#10b981] animate-pulse"></span>
-          <span className="text-[11px] tracking-wider text-[#93c5aa]">ONLINE</span>
+      {/* Status pills & theme toggle */}
+      <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-[#0a2318] border border-[#1d4634] text-xs font-semibold text-gray-200">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#eab308]"></span>
+          <span className="text-[10px] tracking-wider text-gray-300 font-bold">ID: 1</span>
+        </div>
+
+        <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-[#0a2318] border border-[#1d4634] text-xs font-semibold text-gray-200">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse"></span>
+          <span className="text-[10px] tracking-wider text-[#93c5aa] font-bold">ONLINE</span>
         </div>
 
         <button
           onClick={onToggleTheme}
           aria-label="Toggle theme"
-          className="p-1.5 rounded-full hover:bg-[#122e20] text-gray-300 hover:text-white transition-colors"
+          className="p-1 rounded-full hover:bg-[#122e20] text-gray-300 hover:text-[#facc15] transition-colors"
         >
           {isDarkMode ? (
-            <Sun className="w-5 h-5 text-gray-200 hover:text-[#facc15] transition-colors" />
+            <Sun className="w-4 h-4 text-gray-200 hover:text-[#facc15] transition-colors" />
           ) : (
-            <Moon className="w-5 h-5 text-gray-200" />
+            <Moon className="w-4 h-4 text-gray-200" />
           )}
         </button>
       </div>
