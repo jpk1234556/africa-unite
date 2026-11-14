@@ -23,7 +23,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
   ];
 
   return (
-    <nav className="mx-4 mb-6 rounded-full bg-[#05110b]/90 backdrop-blur-md border border-[#183b2c]/80 select-none z-30 shadow-[0_-12px_30px_rgba(0,0,0,0.9)] shadow-[#eab308]/10">
+    <nav className="mx-4 mb-6 safe-bottom rounded-full bg-[#05110b]/90 backdrop-blur-md border border-[#183b2c]/80 select-none z-30 shadow-[0_-12px_30px_rgba(0,0,0,0.9)] shadow-[#eab308]/10">
       <div className="flex items-center justify-around px-2 py-1.5">
         {tabs.map((tab) => {
           const isActive = currentTab === tab.id;

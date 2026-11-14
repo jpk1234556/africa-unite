@@ -2,7 +2,7 @@ import { Wifi, Signal, Battery, Download } from 'lucide-react';
 
 export const MobileStatusBar: React.FC = () => {
   return (
-    <div className="flex items-center justify-between px-6 pt-3 pb-2 text-[13px] font-semibold tracking-tight text-gray-200 select-none">
+    <div className="flex items-center justify-between px-6 safe-top pt-3 pb-2 text-[13px] font-semibold tracking-tight text-gray-200 select-none">
       <div className="flex items-center space-x-2">
         <span>16:35</span>
         <Download className="w-3.5 h-3.5 text-gray-400 stroke-[2.5]" />

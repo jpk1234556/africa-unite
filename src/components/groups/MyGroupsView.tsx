@@ -34,7 +34,7 @@ export const MyGroupsView: React.FC<MyGroupsViewProps> = ({
   };
 
   return (
-    <div className="px-5 py-4 space-y-5">
+    <div className="px-4 sm:px-5 py-4 sm:py-6 space-y-5">
       {/* Header section */}
       <div className="flex items-start justify-between">
         <div>

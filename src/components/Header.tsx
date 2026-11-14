@@ -8,7 +8,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ isDarkMode = true, onToggleTheme }) => {
   return (
-    <header className="px-5 py-3 flex items-center justify-between border-b border-[#143224]/40 bg-[#06140e]/95 backdrop-blur-md sticky top-0 z-20">
+    <header className="px-5 py-3 safe-top flex items-center justify-between border-b border-[#143224]/40 bg-[#06140e]/95 backdrop-blur-md sticky top-0 z-20">
       {/* Brand info */}
       <div className="flex items-center space-x-3">
         <AfricaLogo size={42} />

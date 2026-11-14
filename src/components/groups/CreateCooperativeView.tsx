@@ -43,7 +43,7 @@ export const CreateCooperativeView: React.FC<CreateCooperativeViewProps> = ({
   };
 
   return (
-    <div className="px-5 py-4 space-y-4">
+    <div className="w-full sm:w-[480px] max-h-[90vh] overflow-y-auto px-4 sm:px-5 py-4 sm:py-6 space-y-4 bg-[#081812]/95 backdrop-blur-md border-t sm:border-t-0 border-[#163828] rounded-t-3xl sm:rounded-2xl shadow-2xl">
       {/* Top Header section matching screenshot */}
       <div className="flex items-start justify-between">
         <div>

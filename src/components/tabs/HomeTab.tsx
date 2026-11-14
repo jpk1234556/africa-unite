@@ -12,7 +12,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({ groups, onNavigateToGroups, on
   const totalPoolSum = groups.reduce((acc, curr) => acc + curr.poolAmount, 0);
 
   return (
-    <div className="px-5 py-4 space-y-5">
+    <div className="px-4 sm:px-5 py-4 sm:py-6 space-y-5">
       {/* Welcome Banner */}
       <div className="bg-gradient-to-br from-[#102d1f] to-[#0a1e15] border border-[#1d4633] rounded-2xl p-4 sm:p-5 relative overflow-hidden">
         <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-[#eab308]/10 rounded-full blur-2xl pointer-events-none" />

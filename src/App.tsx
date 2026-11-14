@@ -72,9 +72,9 @@ export function App() {
   };
 
   return (
-    <div className="h-screen bg-[#040d09] flex flex-col justify-between text-gray-100 font-sans selection:bg-[#eab308] selection:text-black overflow-hidden">
+    <div className="h-screen min-h-[100dvh] bg-[#040d09] flex flex-col justify-between text-gray-100 font-sans selection:bg-[#eab308] selection:text-black overflow-hidden">
       {/* Central Clean App UI Container */}
-      <div className="w-full max-w-xl mx-auto flex-1 flex flex-col bg-[#06140e] border-x border-[#143224]/50 shadow-2xl h-full overflow-hidden relative">
+      <div className="w-full max-w-[500px] mx-auto flex-1 flex flex-col bg-[#06140e] border-x border-[#143224]/50 shadow-2xl min-h-[100dvh] overflow-hidden relative safe-container">
         {/* App Header (Static at top) */}
         <Header
           isDarkMode={isDarkMode}
@@ -113,12 +113,14 @@ export function App() {
         onContribute={handleContribute}
       />
 
-      {/* New Pool / Create Cooperative Modal */}
+      {/* New Pool / Create Cooperative Modal (bottom sheet on mobile) */}
       {isCreateOpen && (
-        <CreateCooperativeView
-          onGroupCreated={handleGroupCreated}
-          onCancel={() => setIsCreateOpen(false)}
-        />
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/80 backdrop-blur-sm p-0 sm:p-4 animate-in fade-in duration-200 overflow-hidden">
+          <CreateCooperativeView
+            onGroupCreated={handleGroupCreated}
+            onCancel={() => setIsCreateOpen(false)}
+          />
+        </div>
       )}
     </div>
   );

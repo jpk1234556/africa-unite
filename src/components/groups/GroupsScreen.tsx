@@ -60,7 +60,7 @@ export const GroupsScreen: React.FC<GroupsScreenProps> = ({
   };
 
   return (
-    <div className="px-5 py-4 space-y-6">
+    <div className="px-4 sm:px-5 py-4 sm:py-6 space-y-6">
       {/* =========================================================================
           SCREENSHOT 1: TOP SECTION (GROUP SAVINGS -> Groups -> Collapsible Create)
           ========================================================================= */}
@@ -71,7 +71,7 @@ export const GroupsScreen: React.FC<GroupsScreenProps> = ({
             <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#6c8e7e] block">
               GROUP SAVINGS
             </span>
-            <h2 className="text-3xl font-extrabold text-white tracking-tight mt-0.5 font-sans">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-0.5 font-sans">
               Groups
             </h2>
             <p className="text-xs text-[#8ca89b] mt-1.5 leading-relaxed max-w-xs">

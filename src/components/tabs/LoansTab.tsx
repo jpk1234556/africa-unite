@@ -1,6 +1,6 @@
 export const LoansTab: React.FC = () => {
   return (
-    <div className="px-5 py-4 space-y-4">
+    <div className="px-4 sm:px-5 py-4 sm:py-6 space-y-4">
       <div>
         <h2 className="text-2xl font-bold text-white tracking-tight">Cooperative Loans</h2>
         <p className="text-xs text-[#8ca89b] mt-1 leading-relaxed">
