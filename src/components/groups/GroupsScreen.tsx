@@ -2,8 +2,10 @@ import type React from 'react';
 import { useState } from 'react';
 import {
   RefreshCw,
+  Search,
   Check,
   Globe,
+  SlidersHorizontal,
   Plus,
   ShieldCheck,
   X,
@@ -25,14 +27,32 @@ export const GroupsScreen: React.FC<GroupsScreenProps> = ({
   onOpenGroup,
   onOpenCreate,
 }) => {
-  // Groups list state (Screenshots 2 & 3)
+  // Groups list state & filter chips (Screenshots 2 & 3)
   const [activeTab, setActiveTab] = useState<GroupTab>('my-groups');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'completed' | 'fixed-pot'>('all');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showTrustModal, setShowTrustModal] = useState(false);
 
   const displayList = activeTab === 'my-groups' ? groups : discoverGroups;
 
+  // Filter by both search term and chip category
+  const filteredGroups = displayList.filter((g) => {
+    const matchesSearch =
+      g.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      g.groupType.toLowerCase().includes(searchQuery.toLowerCase());
+
+    if (!matchesSearch) return false;
+    if (statusFilter === 'all') return true;
+    if (statusFilter === 'active') return g.status === 'active';
+    if (statusFilter === 'completed') return g.status === 'completed';
+    if (statusFilter === 'fixed-pot') return g.groupType.toLowerCase().includes('fixed');
+    return true;
+  });
+
   const activeCount = groups.filter((g) => g.status === 'active').length;
+  const completedCount = groups.filter((g) => g.status === 'completed').length;
+  const fixedPotCount = groups.filter((g) => g.groupType.toLowerCase().includes('fixed')).length;
 
   const handleRefresh = () => {
     setIsRefreshing(true);
@@ -145,11 +165,77 @@ export const GroupsScreen: React.FC<GroupsScreenProps> = ({
           </button>
         </div>
 
-        {/* Cards List: bWAIMA -> Kalbu -> Wadawida Trust Fund... */}
+        {/* Search Bar & Quick Filter Chips */}
+        <div className="space-y-2.5">
+          {/* Search Input */}
+          <div className="relative">
+            <Search className="w-4 h-4 text-[#eab308] absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search cooperative groups"
+              className="w-full bg-[#0a1e16] border border-[#163828] rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-[#5a7b6c] focus:outline-none focus:border-[#eab308]/60 focus:ring-1 focus:ring-[#eab308]/60 transition-colors"
+            />
+          </div>
 
+          {/* Quick Filter Chips (All, Active, Completed, Fixed-Pot) */}
+          <div className="flex items-center space-x-2 overflow-x-auto pb-1 text-xs select-none">
+            <div className="flex items-center text-[#6c8e7e] pr-1">
+              <SlidersHorizontal className="w-3.5 h-3.5 mr-1" />
+              <span className="text-[11px] uppercase font-bold tracking-wider">Filter:</span>
+            </div>
+
+            <button
+              onClick={() => setStatusFilter('all')}
+              className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                statusFilter === 'all'
+                  ? 'bg-[#eab308] text-[#06140e] shadow-sm'
+                  : 'bg-[#0b2118]/80 border border-[#163828] text-gray-300 hover:text-white hover:border-[#225039]'
+              }`}
+            >
+              All ({displayList.length})
+            </button>
+
+            <button
+              onClick={() => setStatusFilter('active')}
+              className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                statusFilter === 'active'
+                  ? 'bg-[#eab308] text-[#06140e] shadow-sm'
+                  : 'bg-[#0b2118]/80 border border-[#163828] text-gray-300 hover:text-white hover:border-[#225039]'
+              }`}
+            >
+              Active ({activeCount})
+            </button>
+
+            <button
+              onClick={() => setStatusFilter('completed')}
+              className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                statusFilter === 'completed'
+                  ? 'bg-[#eab308] text-[#06140e] shadow-sm'
+                  : 'bg-[#0b2118]/80 border border-[#163828] text-gray-300 hover:text-white hover:border-[#225039]'
+              }`}
+            >
+              Completed ({completedCount})
+            </button>
+
+            <button
+              onClick={() => setStatusFilter('fixed-pot')}
+              className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                statusFilter === 'fixed-pot'
+                  ? 'bg-[#eab308] text-[#06140e] shadow-sm'
+                  : 'bg-[#0b2118]/80 border border-[#163828] text-gray-300 hover:text-white hover:border-[#225039]'
+              }`}
+            >
+              Fixed-Pot ({fixedPotCount})
+            </button>
+          </div>
+        </div>
+
+        {/* Cards List: bWAIMA -> Kalbu -> Wadawida Trust Fund... */}
         <div className="space-y-4 pt-1 pb-8">
-          {displayList.length > 0 ? (
-            displayList.map((group) => (
+          {filteredGroups.length > 0 ? (
+            filteredGroups.map((group) => (
               <GroupCard
                 key={group.id}
                 group={group}
@@ -157,9 +243,17 @@ export const GroupsScreen: React.FC<GroupsScreenProps> = ({
               />
             ))
           ) : (
-            <div className="text-center py-10 px-4 rounded-xl border border-dashed border-[#183b2c] bg-[#081711]/50">
-              <p className="text-sm text-gray-400">No cooperative groups found.</p>
-              <p className="text-xs text-[#6c8e7e] mt-1">Create a new cooperative pool to get started.</p>
+            <div className="text-center py-8 px-4 rounded-xl border border-dashed border-[#183b2c] bg-[#081711]/50">
+              <p className="text-sm text-gray-400">No cooperative groups match this filter.</p>
+              <button
+                onClick={() => {
+                  setStatusFilter('all');
+                  setSearchQuery('');
+                }}
+                className="text-xs text-[#facc15] font-semibold mt-2 hover:underline"
+              >
+                Reset filters
+              </button>
             </div>
           )}
         </div>

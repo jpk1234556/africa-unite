@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Check, Globe, Plus, RefreshCw } from 'lucide-react';
+import { Search, Check, Globe, Plus, RefreshCw } from 'lucide-react';
 import type { Group, GroupTab } from '../../types';
 import { GroupCard } from './GroupCard';
 
@@ -17,9 +17,14 @@ export const MyGroupsView: React.FC<MyGroupsViewProps> = ({
   onOpenCreateModal,
 }) => {
   const [activeTab, setActiveTab] = useState<GroupTab>('my-groups');
+  const [searchQuery, setSearchQuery] = useState('');
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const displayList = activeTab === 'my-groups' ? groups : discoverGroups;
+  const filteredGroups = displayList.filter((g) =>
+    g.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    g.groupType.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const activeCount = groups.filter((g) => g.status === 'active').length;
 
@@ -108,10 +113,22 @@ export const MyGroupsView: React.FC<MyGroupsViewProps> = ({
         </div>
       </div>
 
+      {/* Search Input (Matching screenshot) */}
+      <div className="relative">
+        <Search className="w-4 h-4 text-[#eab308] absolute left-3.5 top-1/2 -translate-y-1/2" />
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search cooperative groups"
+          className="w-full bg-[#0a1e16] border border-[#163828] rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-[#5a7b6c] focus:outline-none focus:border-[#eab308]/60 focus:ring-1 focus:ring-[#eab308]/60 transition-colors"
+        />
+      </div>
+
       {/* Group List */}
       <div className="space-y-4 pt-1 pb-6">
-        {displayList.length > 0 ? (
-          displayList.map((group) => (
+        {filteredGroups.length > 0 ? (
+          filteredGroups.map((group) => (
             <GroupCard
               key={group.id}
               group={group}
@@ -121,7 +138,7 @@ export const MyGroupsView: React.FC<MyGroupsViewProps> = ({
         ) : (
           <div className="text-center py-10 px-4 rounded-xl border border-dashed border-[#183b2c] bg-[#081711]/50">
             <p className="text-sm text-gray-400">No cooperative groups found.</p>
-            <p className="text-xs text-[#6c8e7e] mt-1">Create a new cooperative pool to get started.</p>
+            <p className="text-xs text-[#6c8e7e] mt-1">Try another search or create a new cooperative pool.</p>
             <button
               onClick={onOpenCreateModal}
               className="mt-4 px-4 py-2 rounded-lg bg-[#eab308] text-[#06140e] text-xs font-bold hover:bg-[#facc15] transition-colors"
