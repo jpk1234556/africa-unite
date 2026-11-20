@@ -311,89 +311,114 @@ export const AssetsTab: React.FC = () => {
         {exchangeTab === 'marketplace' && (
           <div className="space-y-3 pt-1">
             {displayedAssets.length > 0 ? (
-              displayedAssets.map((asset) => (
-                <div
-                  key={asset.id}
-                  className="bg-[#05150e]/95 border border-[#143224] rounded-2xl p-4 sm:p-5 space-y-3 shadow-sm"
-                >
-                  {/* Top: Avatar Icon + Category + Name + Value */}
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 rounded-xl bg-[#112d20] border border-[#1f4e38] flex items-center justify-center text-[#eab308] flex-shrink-0">
-                      <Laptop className="w-6 h-6" />
-                    </div>
-
-                    <div className="flex-1 min-w-0">
-                      <span className="block text-[10px] font-bold uppercase tracking-wider text-[#6c8e7e]">
-                        PRODUCTIVE ASSET
-                      </span>
-                      <h4 className="text-base sm:text-lg font-bold text-white tracking-tight truncate">
-                        {asset.name}
-                      </h4>
-                      <p className="text-xs text-[#8ca89b] mt-0.5">
-                        UGX {asset.declaredValue.toLocaleString('en-US', { minimumFractionDigits: 2 })} | {asset.source}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* 2x2 Grid: Quality, Est. Collateral, Status, Resale Demand */}
-                  <div className="grid grid-cols-2 gap-2.5">
-                    {/* ASSET QUALITY */}
-                    <div className="bg-[#030d08] border border-[#122e20] rounded-xl p-3">
-                      <span className="block text-[10px] font-bold uppercase tracking-wider text-[#6c8e7e]">
-                        ASSET QUALITY
-                      </span>
-                      <div className="flex items-baseline space-x-1 mt-1">
-                        <span className="text-sm sm:text-base font-bold text-white">
-                          {asset.quality}
-                        </span>
-                      </div>
-                      <span className="text-[11px] text-[#facc15] font-semibold block mt-0.5">
-                        {asset.qualityLevel}
-                      </span>
-                    </div>
-
-                    {/* EST. COLLATERAL */}
-                    <div className="bg-[#030d08] border border-[#122e20] rounded-xl p-3">
-                      <span className="block text-[10px] font-bold uppercase tracking-wider text-[#6c8e7e]">
-                        EST. COLLATERAL
-                      </span>
-                      <span className="block text-sm sm:text-base font-bold text-white mt-1 font-sans">
-                        UGX {asset.estCollateral.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                      </span>
-                    </div>
-
-                    {/* STATUS */}
-                    <div className="bg-[#030d08] border border-[#122e20] rounded-xl p-3">
-                      <span className="block text-[10px] font-bold uppercase tracking-wider text-[#6c8e7e]">
-                        STATUS
-                      </span>
-                      <span className="block text-sm sm:text-base font-bold text-white mt-1 font-sans capitalize">
-                        {asset.status}
-                      </span>
-                    </div>
-
-                    {/* RESALE DEMAND */}
-                    <div className="bg-[#030d08] border border-[#122e20] rounded-xl p-3">
-                      <span className="block text-[10px] font-bold uppercase tracking-wider text-[#6c8e7e]">
-                        RESALE DEMAND
-                      </span>
-                      <span className="block text-sm sm:text-base font-bold text-white mt-1 font-sans capitalize">
-                        {asset.resaleDemand}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Buy Asset Button */}
-                  <button
-                    type="button"
-                    onClick={() => handleBuyAsset(asset)}
-                    className="w-full bg-[#eab308] hover:bg-[#facc15] text-[#06140e] font-extrabold text-sm sm:text-base py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors uppercase tracking-wider shadow-md shadow-[#eab308]/20 cursor-pointer"
+              displayedAssets.map((asset) => {
+                const isExpanded = expandedAssetId === asset.id;
+                return (
+                  <div
+                    key={asset.id}
+                    className="bg-[#05150e]/95 border border-[#143224] hover:border-[#22503a] rounded-2xl p-4 sm:p-5 space-y-3 shadow-sm transition-all"
                   >
-                    <ShoppingBag className="w-4 h-4" />
-                    <span>Buy asset</span>
-                  </button>
-                </div>
-              ))
+                    {/* Clickable Header: Laptop summary (clicked to display details) */}
+                    <div
+                      onClick={() => setExpandedAssetId(isExpanded ? null : asset.id)}
+                      className="flex items-center justify-between cursor-pointer group select-none"
+                    >
+                      <div className="flex items-center space-x-3 min-w-0">
+                        <div className="w-12 h-12 rounded-xl bg-[#112d20] border border-[#1f4e38] flex items-center justify-center text-[#eab308] flex-shrink-0 group-hover:border-[#eab308]/50 transition-colors">
+                          <Laptop className="w-6 h-6" />
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          <span className="block text-[10px] font-bold uppercase tracking-wider text-[#6c8e7e]">
+                            PRODUCTIVE ASSET
+                          </span>
+                          <h4 className="text-base sm:text-lg font-bold text-white tracking-tight truncate group-hover:text-[#eab308] transition-colors">
+                            {asset.name}
+                          </h4>
+                          <p className="text-xs text-[#8ca89b] mt-0.5">
+                            UGX {asset.declaredValue.toLocaleString('en-US', { minimumFractionDigits: 2 })} | {asset.source}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Click to display details indicator */}
+                      <div className="flex items-center space-x-1.5 text-xs text-[#eab308] font-semibold pl-2">
+                        <span className="text-[11px] hidden sm:inline">
+                          {isExpanded ? 'Hide details' : 'View details'}
+                        </span>
+                        {isExpanded ? (
+                          <ChevronUp className="w-4 h-4 text-[#eab308]" />
+                        ) : (
+                          <ChevronDown className="w-4 h-4 text-[#eab308] group-hover:translate-y-0.5 transition-transform" />
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Expandable Details (Shown on Click) */}
+                    {isExpanded && (
+                      <div className="pt-2 space-y-3 border-t border-[#143224]/60 animate-in fade-in duration-200">
+                        {/* 2x2 Grid: Quality, Est. Collateral, Status, Resale Demand */}
+                        <div className="grid grid-cols-2 gap-2.5">
+                          {/* ASSET QUALITY */}
+                          <div className="bg-[#030d08] border border-[#122e20] rounded-xl p-3">
+                            <span className="block text-[10px] font-bold uppercase tracking-wider text-[#6c8e7e]">
+                              ASSET QUALITY
+                            </span>
+                            <div className="flex items-baseline space-x-1 mt-1">
+                              <span className="text-sm sm:text-base font-bold text-white">
+                                {asset.quality}
+                              </span>
+                            </div>
+                            <span className="text-[11px] text-[#facc15] font-semibold block mt-0.5">
+                              {asset.qualityLevel}
+                            </span>
+                          </div>
+
+                          {/* EST. COLLATERAL */}
+                          <div className="bg-[#030d08] border border-[#122e20] rounded-xl p-3">
+                            <span className="block text-[10px] font-bold uppercase tracking-wider text-[#6c8e7e]">
+                              EST. COLLATERAL
+                            </span>
+                            <span className="block text-sm sm:text-base font-bold text-white mt-1 font-sans">
+                              UGX {asset.estCollateral.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                            </span>
+                          </div>
+
+                          {/* STATUS */}
+                          <div className="bg-[#030d08] border border-[#122e20] rounded-xl p-3">
+                            <span className="block text-[10px] font-bold uppercase tracking-wider text-[#6c8e7e]">
+                              STATUS
+                            </span>
+                            <span className="block text-sm sm:text-base font-bold text-white mt-1 font-sans capitalize">
+                              {asset.status}
+                            </span>
+                          </div>
+
+                          {/* RESALE DEMAND */}
+                          <div className="bg-[#030d08] border border-[#122e20] rounded-xl p-3">
+                            <span className="block text-[10px] font-bold uppercase tracking-wider text-[#6c8e7e]">
+                              RESALE DEMAND
+                            </span>
+                            <span className="block text-sm sm:text-base font-bold text-white mt-1 font-sans capitalize">
+                              {asset.resaleDemand}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Buy Asset Button */}
+                        <button
+                          type="button"
+                          onClick={() => handleBuyAsset(asset)}
+                          className="w-full bg-[#eab308] hover:bg-[#facc15] text-[#06140e] font-extrabold text-sm sm:text-base py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-colors uppercase tracking-wider shadow-md shadow-[#eab308]/20 cursor-pointer"
+                        >
+                          <ShoppingBag className="w-4 h-4" />
+                          <span>Buy asset</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })
             ) : (
               <div className="py-8 text-center text-[#6c8e7e] text-xs">
                 <p>No assets found in this view.</p>
